@@ -7,8 +7,8 @@ import InputText from '../../components/Input/InputText'
 function Login(){
 
     const INITIAL_LOGIN_OBJ = {
-        password : "",
-        emailId : ""
+        password : "1234",
+        emailId : "cristminix@gmail.com"
     }
 
     const [loading, setLoading] = useState(false)
@@ -31,6 +31,7 @@ function Login(){
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
                     },
+                     'credentials': 'include',
                     method:'POST',
                     body: JSON.stringify({
                         email:loginObj.emailId,

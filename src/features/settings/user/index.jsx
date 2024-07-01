@@ -46,6 +46,7 @@ function User(){
         setUsers([])
         try{
             const result = await fetch('http://localhost:8787/api/users',{
+                 'credentials': 'include',
                 headers: {
         'Content-type': 'application/json',
         'Authorization': `Bearer ${localStorage.token}`, // notice the Bearer before your token
