@@ -16,7 +16,7 @@ function Register(){
     const [errorMessage, setErrorMessage] = useState("")
     const [registerObj, setRegisterObj] = useState(INITIAL_REGISTER_OBJ)
 
-    const submitForm = (e) =>{
+    const submitForm = async(e) =>{
         e.preventDefault()
         setErrorMessage("")
 
@@ -26,9 +26,41 @@ function Register(){
         else{
             setLoading(true)
             // Call API to check user credentials and save token in localstorage
-            localStorage.setItem("token", "DumyTokenHere")
+            // localStorage.setItem("token", "DumyTokenHere")
+            try{
+                const result = await fetch(`http://localhost:8787/auth/register`,{
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    method:'POST',
+                    body: JSON.stringify({
+                        username:registerObj.name,
+                        email:registerObj.emailId,
+                        password:registerObj.password
+                    })
+                }).then(r=>r.json())
+                if(result.success){
+                    window.location.href = '/login'
+                }else{
+                    if(result.error){
+                    let errMsg=""
+
+                        for(const error of result.error.issues){
+                            errMsg += error.message
+                        }
+                        setErrorMessage(errMsg)
+
+                    }
+                    else
+                        setErrorMessage(result.message)
+                }
+                console.log(result)
+            }catch(e){
+                console.log(e)
+            }
             setLoading(false)
-            window.location.href = '/app/welcome'
+            
         }
     }
 

@@ -107,6 +107,12 @@ const routes = [
         icon: <UsersIcon className={submenuIconClasses}/>, // icon component
         name: 'Team Members', // name that appear in Sidebar
       },
+
+      {
+        path: '/app/users', // url
+        icon: <UsersIcon className={submenuIconClasses}/>, // icon component
+        name: 'Users', // name that appear in Sidebar
+      },
     ]
   },
   {

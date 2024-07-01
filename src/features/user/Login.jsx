@@ -15,7 +15,7 @@ function Login(){
     const [errorMessage, setErrorMessage] = useState("")
     const [loginObj, setLoginObj] = useState(INITIAL_LOGIN_OBJ)
 
-    const submitForm = (e) =>{
+    const submitForm = async(e) =>{
         e.preventDefault()
         setErrorMessage("")
 
@@ -24,9 +24,42 @@ function Login(){
         else{
             setLoading(true)
             // Call API to check user credentials and save token in localstorage
-            localStorage.setItem("token", "DumyTokenHere")
+            
+            try{
+                const result = await fetch(`http://localhost:8787/auth/login`,{
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    method:'POST',
+                    body: JSON.stringify({
+                        email:loginObj.emailId,
+                        password:loginObj.password
+                    })
+                }).then(r=>r.json())
+                if(result.success){
+                    console.log(result)
+                    localStorage.setItem("token", result.token)
+                    window.location.href = '/app/welcome'
+                }else{
+                    if(result.error){
+                    let errMsg=""
+
+                        for(const error of result.error.issues){
+                            errMsg += error.message
+                        }
+                        setErrorMessage(errMsg)
+
+                    }
+                    else
+                        setErrorMessage(result.message)
+                }
+                console.log(result)
+            }catch(e){
+                console.log(e)
+            }
             setLoading(false)
-            window.location.href = '/app/welcome'
+            // window.location.href = '/app/welcome'
         }
     }
 
