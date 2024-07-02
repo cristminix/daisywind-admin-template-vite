@@ -1,9 +1,10 @@
 import axios from "axios"
+import { getJwtToken } from '../global/auth/getJwtToken';
 
 const checkAuth = () => {
 /*  Getting token value stored in localstorage, if token is not present we will open login page 
     for all internal dashboard routes  */
-    const TOKEN = localStorage.getItem("token")
+    const TOKEN = getJwtToken()
     const PUBLIC_ROUTES = ["login", "forgot-password", "register", "documentation"]
 
     const isPublicPage = PUBLIC_ROUTES.some( r => window.location.href.includes(r))

@@ -3,7 +3,8 @@ import {Link} from 'react-router-dom'
 import LandingIntro from './LandingIntro'
 import ErrorText from  '../../components/Typography/ErrorText'
 import InputText from '../../components/Input/InputText'
-
+import {API_BASE_URL} from "../../config"
+import {handleLogin} from "../../global/auth"
 function Login(){
 
     const INITIAL_LOGIN_OBJ = {
@@ -24,41 +25,16 @@ function Login(){
         else{
             setLoading(true)
             // Call API to check user credentials and save token in localstorage
-            
-            try{
-                const result = await fetch(`http://localhost:8787/auth/login`,{
-                    headers: {
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json'
-                    },
-                     'credentials': 'include',
-                    method:'POST',
-                    body: JSON.stringify({
-                        email:loginObj.emailId,
-                        password:loginObj.password
-                    })
-                }).then(r=>r.json())
-                if(result.success){
-                    console.log(result)
-                    localStorage.setItem("token", result.token)
-                    window.location.href = '/app/welcome'
-                }else{
-                    if(result.error){
-                    let errMsg=""
-
-                        for(const error of result.error.issues){
-                            errMsg += error.message
-                        }
-                        setErrorMessage(errMsg)
-
+            await handleLogin({
+                email:loginObj.emailId,
+                password:loginObj.password,
+                callback:(succes,message)=>{
+                    if(!succes){
+                        setErrorMessage(message)
                     }
-                    else
-                        setErrorMessage(result.message)
                 }
-                console.log(result)
-            }catch(e){
-                console.log(e)
-            }
+            })            
+            
             setLoading(false)
             // window.location.href = '/app/welcome'
         }

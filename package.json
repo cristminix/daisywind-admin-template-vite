@@ -13,6 +13,7 @@
     "@heroicons/react": "^2.1.4",
     "@reduxjs/toolkit": "^2.2.6",
     "@tailwindcss/typography": "^0.5.13",
+    "@thumbmarkjs/thumbmarkjs": "^0.14.8",
     "axios": "^1.7.2",
     "capitalize-the-first-letter": "^1.0.8",
     "chart.js": "^4.4.3",

@@ -1,10 +1,11 @@
-import React, { lazy, useEffect } from 'react'
+import React, { lazy, useEffect, useRef,useState } from 'react'
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { themeChange } from 'theme-change'
 import checkAuth from './app/auth';
 import initializeApp from './app/init';
-
+import {isTokenExpired} from "./global/fn/isTokenExpired"
+import {getJwtToken,getRefreshToken,setJwtToken,setRefreshToken,updateToken} from "./global/auth"
 // Importing pages
 const Layout = lazy(() => import('./containers/Layout'))
 const Login = lazy(() => import('./pages/Login'))
@@ -22,13 +23,54 @@ const token = checkAuth()
 
 
 function App() {
-
+  const timerRef = useRef(null)
+  const [timerStarted,startTimer]=useState(true)
+  const timeInterval = 5000
   useEffect(() => {
     // 👆 daisy UI themes initialization
     themeChange(false)
   }, [])
 
+  const onTimerThick = async()=>{
+    let token,refreshToken,tokenExpired,refreshTokenExpired
+    token = getJwtToken()
 
+    if(!token){
+      console.log(`token is null, are you login`)
+      return
+    }
+    tokenExpired = isTokenExpired(token)
+
+    refreshToken = getRefreshToken()
+    if(!refreshToken){
+      console.log(`refresh token is null, are you login`)
+      return
+    }
+    refreshTokenExpired = isTokenExpired(refreshToken)
+    const date=new Date()
+    console.log({token,refreshToken,date,tokenExpired,refreshTokenExpired})
+
+    if(tokenExpired){
+      startTimer(false)
+      // const result = await updateToken()
+      startTimer(true)
+    }
+  }
+  const createTimer = ()=>{
+    timerRef.current = setInterval(()=>{
+      onTimerThick()
+    },timeInterval)
+  }
+  const stopTimer = ()=>{
+    clearInterval(timerRef.current)
+  }
+  useEffect(()=>{
+    if(timerStarted)
+      createTimer()
+    else
+      stopTimer()
+    return ()=>stopTimer()
+  },[timerStarted,startTimer])
   return (
     <>
       <Router>

@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import LandingIntro from './LandingIntro'
 import ErrorText from  '../../components/Typography/ErrorText'
 import InputText from '../../components/Input/InputText'
+import {API_BASE_URL} from "../../config"
 
 function Register(){
 
@@ -28,7 +29,7 @@ function Register(){
             // Call API to check user credentials and save token in localstorage
             // localStorage.setItem("token", "DumyTokenHere")
             try{
-                const result = await fetch(`http://localhost:8787/auth/register`,{
+                const result = await fetch(`${API_BASE_URL}/auth/register`,{
                     headers: {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'

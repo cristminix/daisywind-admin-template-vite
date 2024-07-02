@@ -3,6 +3,8 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import TitleCard from "../../../components/Cards/TitleCard"
 import { showNotification } from '../../common/headerSlice'
+import {API_BASE_URL} from "../../../config"
+import { getJwtToken } from '../../../global/auth/getJwtToken';
 
 const TopSideButtons = () => {
 
@@ -45,11 +47,11 @@ function User(){
     const loadUserList = async()=>{
         setUsers([])
         try{
-            const result = await fetch('http://localhost:8787/api/users',{
+            const result = await fetch(`${API_BASE_URL}/api/users`,{
                  'credentials': 'include',
                 headers: {
         'Content-type': 'application/json',
-        'Authorization': `Bearer ${localStorage.token}`, // notice the Bearer before your token
+        'Authorization': `Bearer ${getJwtToken()}`, // notice the Bearer before your token
     },
             }).then(r=>r.json())
             if(result.success){
