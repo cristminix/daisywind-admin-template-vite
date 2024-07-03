@@ -1,3 +1,6 @@
 export function getRefreshToken() {
-    return sessionStorage.getItem("refreshToken")
+    const token = sessionStorage.getItem("refreshToken")
+    if( token == 'undefined'|| token == 'null'||token=='')
+        return null
+    return token
 }

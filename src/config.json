@@ -1,4 +1,6 @@
 {
 	"API_BASE_URL":"https://localhost:8787",
-	"BASE_URL":"https://localhost:5173"
+	"BASE_URL":"https://localhost:5173",
+	"JWT_FINGERPRINT_COOKIE_NAME":"__Secure-Fgp",
+	"JWT_FINGERPRINT_REFRESH_COOKIE_NAME":"__Secure-Fgp-Refresh"
 }

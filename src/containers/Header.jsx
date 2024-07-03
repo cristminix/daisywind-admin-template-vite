@@ -10,7 +10,7 @@ import { RIGHT_DRAWER_TYPES } from '../utils/globalConstantUtil'
 
 import { NavLink,  Routes, Link , useLocation} from 'react-router-dom'
 
-
+import {logout} from "../global/auth/logout"
 function Header(){
 
     const dispatch = useDispatch()
@@ -36,8 +36,9 @@ function Header(){
     }
 
 
-    function logoutUser(){
-        localStorage.clear();
+    async function logoutUser(){
+        // localStorage.clear();
+        await logout()
         window.location.href = '/'
     }
 

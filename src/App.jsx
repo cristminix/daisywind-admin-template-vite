@@ -24,7 +24,7 @@ const token = checkAuth()
 
 function App() {
   const timerRef = useRef(null)
-  const [timerStarted,startTimer]=useState(true)
+  const skipThickRef = useRef(false)
   const timeInterval = 5000
   useEffect(() => {
     // 👆 daisy UI themes initialization
@@ -48,29 +48,36 @@ function App() {
     }
     refreshTokenExpired = isTokenExpired(refreshToken)
     const date=new Date()
-    console.log({token,refreshToken,date,tokenExpired,refreshTokenExpired})
-
+    // console.log({token,refreshToken,date,tokenExpired,refreshTokenExpired})
+    if(refreshTokenExpired){
+      console.log(`refresh token expired logout`)
+    }
     if(tokenExpired){
-      startTimer(false)
-      // const result = await updateToken()
-      startTimer(true)
+      skipThickRef.current = true
+      console.log(`updating token`)
+      const result = await updateToken()
+      console.log(result)
+      skipThickRef.current = false
     }
   }
   const createTimer = ()=>{
     timerRef.current = setInterval(()=>{
-      onTimerThick()
+      if(!skipThickRef.current)
+        onTimerThick()
+      else
+        console.log(`onTimerThick skipped ...`)
     },timeInterval)
   }
   const stopTimer = ()=>{
     clearInterval(timerRef.current)
   }
   useEffect(()=>{
-    if(timerStarted)
+    // if(timerStarted)
       createTimer()
-    else
-      stopTimer()
+    // else
+      // stopTimer()
     return ()=>stopTimer()
-  },[timerStarted,startTimer])
+  },[])
   return (
     <>
       <Router>

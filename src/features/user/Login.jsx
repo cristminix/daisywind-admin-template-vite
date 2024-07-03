@@ -25,7 +25,7 @@ function Login(){
         else{
             setLoading(true)
             // Call API to check user credentials and save token in localstorage
-            await handleLogin({
+            const success = await handleLogin({
                 email:loginObj.emailId,
                 password:loginObj.password,
                 callback:(succes,message)=>{
@@ -36,7 +36,8 @@ function Login(){
             })            
             
             setLoading(false)
-            // window.location.href = '/app/welcome'
+            if(success)
+            window.location.href = '/app/welcome'
         }
     }
 

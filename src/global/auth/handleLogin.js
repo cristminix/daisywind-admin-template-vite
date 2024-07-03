@@ -12,4 +12,5 @@ export async function  handleLogin({ email, password ,callback=f=>f}) {
   // If you like, you may redirect the user now
   // Router.push("/some-url")
   callback&&callback(success,message)
+  return success
 }
